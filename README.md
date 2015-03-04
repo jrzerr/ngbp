@@ -1,4 +1,4 @@
-# [ngBoilerplate](https://github.com/jrzerr/ngbp) [![Build Status](https://api.travis-ci.org/ngbp/ngbp.png?branch=v0.3.2-release)](https://travis-ci.org/ngbp/ngbp)
+# [ngBoilerplate](https://github.com/jrzerr/ngbp) [![Build Status](https://api.travis-ci.org/jrzerr/ngbp.svg?branch=master)](https://travis-ci.org/jrzerr/ngbp)
 
 An opinionated kickstarter for [AngularJS](http://angularjs.org) projects.
 
