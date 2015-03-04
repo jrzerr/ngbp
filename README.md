@@ -1,4 +1,4 @@
-# [ngBoilerplate](http://joshdmiller.github.com/ng-boilerplate) [![Build Status](https://api.travis-ci.org/ngbp/ngbp.png?branch=v0.3.2-release)](https://travis-ci.org/ngbp/ngbp)
+# [ngBoilerplate](https://github.com/jrzerr/ngbp) [![Build Status](https://api.travis-ci.org/ngbp/ngbp.png?branch=v0.3.2-release)](https://travis-ci.org/ngbp/ngbp)
 
 An opinionated kickstarter for [AngularJS](http://angularjs.org) projects.
 
@@ -9,15 +9,15 @@ An opinionated kickstarter for [AngularJS](http://angularjs.org) projects.
 Install Node.js and then:
 
 ```sh
-$ git clone git://github.com/joshdmiller/ng-boilerplate
-$ cd ng-boilerplate
+$ git clone https://github.com/jrzerr/ngbp.git
+$ cd ngbp
 $ sudo npm -g install grunt-cli karma bower
 $ npm install
 $ bower install
 $ grunt watch
 ```
 
-Finally, open `file:///path/to/ng-boilerplate/build/index.html` in your browser.
+Finally, open `file:///path/to/ngbp/build/index.html` in your browser.
 
 Happy hacking!
 
@@ -72,8 +72,7 @@ that - and does it well.
 At a high level, the structure looks roughly like this:
 
 ```
-ng-boilerplate/
-  |- grunt-tasks/
+ngbp/
   |- karma/
   |- src/
   |  |- app/
@@ -87,7 +86,6 @@ ng-boilerplate/
   |- vendor/
   |  |- angular-bootstrap/
   |  |- bootstrap/
-  |  |- placeholders/
   |- .bowerrc
   |- bower.json
   |- build.config.js
@@ -149,7 +147,7 @@ from GitHub, or merge the branch into your existing repository. Assuming you're
 starting from scratch, simply clone this repository using git:
 
 ```sh
-$ git clone git://github.com/joshdmiller/ng-boilerplate my-project-name
+$ git clone https://github.com/jrzerr/ngbp.git my-project-name
 $ cd my-project-name
 ```
 
@@ -363,7 +361,7 @@ Naturally, I am open to all manner of ideas and suggestions. See the
 
 ### To Do
 
-See the [issues list](http://github.com/joshdmiller/ng-boilerplate/issues). And
+See the [issues list](https://github.com/jrzerr/ngbp/issues). And
 feel free to submit your own!
 
 ### Contributing
