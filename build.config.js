@@ -70,6 +70,7 @@ module.exports = {
     css: [
     ],
     assets: [
+      'vendor/font-awesome/fonts/*'
     ]
   },
 };

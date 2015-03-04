@@ -8,13 +8,11 @@ tests of such code.
 ```
 src/
   |- app/
-  |  |- about/
   |  |- home/
   |  |- app.js
   |  |- app.spec.js
   |- assets/
   |- common/
-  |  |- plusOne/
   |- less/
   |  |- main.less
   |  |- variables.less
@@ -23,7 +21,7 @@ src/
 
 - `src/app/` - application-specific code, i.e. code not likely to be reused in
   another application. [Read more &raquo;](app/README.md)
-- `src/assets/` - static files like fonts and images. 
+- `src/assets/` - static files like fonts and images.
   [Read more &raquo;](assets/README.md)
 - `src/common/` - third-party libraries or components likely to be reused in
   another application. [Read more &raquo;](common/README.md)

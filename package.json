@@ -1,16 +1,16 @@
 {
-  "author": "Josh David Miller",
+  "author": "Jeremy Zerr",
   "name": "ngbp",
-  "version": "0.3.2",
-  "homepage": "https://github.com/ngbp/ngbp",
+  "version": "1.0.0",
+  "homepage": "https://github.com/jrzerr/ngbp",
   "licenses": {
     "type": "MIT",
-    "url": "https://raw.github.com/ngbp/ngbp/master/LICENSE"
+    "url": "https://raw.github.com/jrzerr/ngbp/master/LICENSE"
   },
-  "bugs": "https://github.com/ngbp/ngbp/issues",
+  "bugs": "https://github.com/jrzerr/ngbp/issues",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ngbp/ngbp.git"
+    "url": "git@github.com:jrzerr/ngbp.git"
   },
   "dependencies": {},
   "devDependencies": {
@@ -32,6 +32,7 @@
     "karma-jasmine": "^0.1.5",
     "grunt-karma": "^0.8.2",
     "karma-coffee-preprocessor": "^0.2.1",
-    "karma": "^0.12.9"
+    "karma": "^0.12.9",
+    "grunt-replace": "^0.8.0"
   }
 }
