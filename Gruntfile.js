@@ -459,6 +459,12 @@ module.exports = function ( grunt ) {
         dir: '<%= build_dir %>'
       },
       compile: {
+        dir: '<%= compile_dir %>'
+      }
+    },
+
+    test_version: {
+      build: {
         dir: '<%= build_dir %>'
       }
     },
@@ -634,7 +640,7 @@ module.exports = function ( grunt ) {
     'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'less:build',
     'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss',
-    'index:build', 'version:build', 'karmaconfig',
+    'index:build', 'version:build', 'test_version:build','karmaconfig',
     'karma:continuous'
   ]);
 
@@ -643,7 +649,8 @@ module.exports = function ( grunt ) {
    * minifying your code.
    */
   grunt.registerTask( 'compile', [
-    'less:compile', 'concat:build_css', 'copy:compile_assets', 'ngmin', 'concat:compile_js', 'uglify', 'index:compile'
+    'less:compile', 'concat:build_css', 'copy:compile_assets', 'ngmin', 'concat:compile_js', 'uglify', 'index:compile',
+    'version:compile'
   ]);
 
   /**
@@ -702,6 +709,11 @@ module.exports = function ( grunt ) {
         });
       }
     });
+  });
+
+  grunt.registerMultiTask( 'test_version', 'Copy test_version* files', function () {
+    grunt.file.copy('src/test_versionx.json', this.data.dir + '/test_versionx.json');
+    grunt.file.copy('src/test_versiony.json', this.data.dir + '/test_versiony.json');
   });
 
   /**

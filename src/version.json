@@ -1,1 +1,3 @@
-{ version: "<%= version %>"" }
+{ 
+  "version": "<%= version %>" 
+}
