@@ -18,7 +18,7 @@ angular.module('version', [])
     currentVersion = v
 
   version.getCurrent = () ->
-    return runningVersion
+    return currentVersion
 
   version.loadRunning = () ->
     version.loadCurrent()
@@ -27,7 +27,7 @@ angular.module('version', [])
 
   version.loadCurrent = () ->
     return $http.get(endpoint, { cache: false })
-    .error (data, status, headers, config) ->
+    .error (data) ->
       # Not sure what is the best way to handle
       # a failed requrest. Should probably try
       # a few more attempts
@@ -44,16 +44,16 @@ angular.module('version', [])
       if currentVersion is runningVersion
         deferred.resolve("Versions match")
       else
-        deffered.reject("Versions do not match!")
+        deferred.reject("Versions do not match!")
     else
+      console.log deferred
       version.loadCurrent()
       .success (data) ->
-        console.log endpoint
         currentVersion = data.version
         if currentVersion is runningVersion
           deferred.resolve("Versions match")
         else
-          deffered.reject("Versions do not match!")
+          deferred.reject("Versions do not match!")
     
     currentVersion = ""
     return deferred.promise
