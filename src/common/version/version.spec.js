@@ -32,7 +32,6 @@ describe( 'versionService', function() {
     }, function () {
       current = false;
     });
-    $httpBackend.flush();
     $scope.$apply();
 
     expect(current).toBeTruthy();
@@ -54,7 +53,6 @@ describe( 'versionService', function() {
     }, function () {
       current = false;
     });
-    $httpBackend.flush();
     $scope.$apply();
 
     expect(current).toBeFalsy();

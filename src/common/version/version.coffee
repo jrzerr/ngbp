@@ -1,6 +1,6 @@
 angular.module('version', [])
 
-.factory 'versionService', ($http, $location, $q, $timeout) ->
+.factory 'versionService', ($http, $q) ->
   Version = {}
   runningVersion = ""
   currentVersion = ""
@@ -44,18 +44,18 @@ angular.module('version', [])
     # request should not be made.
     if currentVersion isnt ""
       if currentVersion is runningVersion
-        deferred.resolve("Versions match")
+        deferred.resolve "Versions match"
       else
-        deferred.reject("Versions do not match!")
+        deferred.reject "Versions do not match!"
     else
       runningVersionPromise.then (data) ->
         Version.loadCurrent()
         .then (data) ->
           currentVersion = data.data.version
           if currentVersion is runningVersion
-            deferred.resolve("Versions match")
+            deferred.resolve "Versions match"
           else
-            deferred.reject("Versions do not match!")
+            deferred.reject "Versions do not match!"
           currentVersion = ""
     
     return deferred.promise

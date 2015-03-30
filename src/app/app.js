@@ -20,6 +20,7 @@ angular.module( 'ngBoilerplate', [
     if ( angular.isDefined( toState.data.pageTitle ) ) {
       $scope.pageTitle = toState.data.pageTitle + ' | ngBoilerplate' ;
     }
+    console.log(versionService);
     versionService.isCurrent()
       .then(function (data) {
         console.log("success: "+data);
