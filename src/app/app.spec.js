@@ -40,7 +40,6 @@ describe( 'AppCtrl', function() {
       });
 
       waitsFor(function () {
-        console.log("WAITING");
         return done;
       });
 
@@ -85,7 +84,30 @@ describe( 'AppCtrl', function() {
 
     }));
 
-    it( 'should detect updates when loaded from server', inject( function() {
+    it( 'should not update when versions from server are equal', inject( function() {
+      current = false;
+      Version.setEndpoint("test_versionx.json");
+      Version.loadRunning();
+      Version.isCurrent().then(function (data) {
+        current = true;
+      });
+      $httpBackend.flush();
+      $scope.$apply();
+      expect( current ).toBeTruthy();
+
+    }));
+
+    it( 'should update when versions from server are not equal', inject( function() {
+      current = false;
+      Version.setEndpoint("test_versionx.json");
+      Version.loadRunning();
+      Version.setEndpoint("test_versiony.json");
+      Version.isCurrent().then(function (data) {
+        current = true;
+      });
+      $httpBackend.flush();
+      $scope.$apply();
+      expect( current ).toBeFalsy();
 
     }));
   });

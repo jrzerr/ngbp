@@ -20,12 +20,12 @@ angular.module('version', [])
   version.getCurrent = () ->
     return currentVersion
 
-  version.loadRunning = () ->
-    version.loadCurrent()
+  version.loadRunning = (lol) ->
+    runningVersionPromise = version.loadCurrent()
     .success (data) ->
       runningVersion = data.version
 
-  version.loadCurrent = () ->
+  version.loadCurrent = (lol) ->
     return $http.get(endpoint, { cache: false })
     .error (data) ->
       # Not sure what is the best way to handle
@@ -46,16 +46,16 @@ angular.module('version', [])
       else
         deferred.reject("Versions do not match!")
     else
-      console.log deferred
-      version.loadCurrent()
-      .success (data) ->
-        currentVersion = data.version
-        if currentVersion is runningVersion
-          deferred.resolve("Versions match")
-        else
-          deferred.reject("Versions do not match!")
+      runningVersionPromise.then (data) ->
+        version.loadCurrent()
+        .then (data) ->
+          currentVersion = data.data.version
+          if currentVersion is runningVersion
+            deferred.resolve("Versions match")
+          else
+            deferred.reject("Versions do not match!")
+          currentVersion = ""
     
-    currentVersion = ""
     return deferred.promise
 
   version.setEndpoint = (location) ->
