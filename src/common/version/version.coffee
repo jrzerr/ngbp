@@ -1,6 +1,6 @@
 angular.module('version', [])
 
-.factory 'versionService', ($http, $q) ->
+.factory 'versionService', ($rootScope, $http, $q) ->
   Version = {}
   runningVersion = ""
   currentVersion = ""
@@ -35,6 +35,14 @@ angular.module('version', [])
       # a few more attempts
       console.log "Could not fetch version"
 
+  Version.processPromise = (deferred, running, current) ->
+    if current is running
+      deferred.resolve "Versions match"
+    else
+      deferred.reject "Versions do not match!"
+      $rootScope.$broadcast("version:expired",
+        running, current)
+
   Version.isCurrent = () ->
     deferred = $q.defer()
     # For testing purposes.
@@ -43,19 +51,13 @@ angular.module('version', [])
     # not "" at the beginning of the call, an $http
     # request should not be made.
     if currentVersion isnt ""
-      if currentVersion is runningVersion
-        deferred.resolve "Versions match"
-      else
-        deferred.reject "Versions do not match!"
+      Version.processPromise(deferred, runningVersion, currentVersion)
     else
       runningVersionPromise.then (data) ->
         Version.loadCurrent()
         .then (data) ->
-          currentVersion = data.data.version
-          if currentVersion is runningVersion
-            deferred.resolve "Versions match"
-          else
-            deferred.reject "Versions do not match!"
+          Version.processPromise(deferred, runningVersion, data.data.version)
+
           currentVersion = ""
     
     return deferred.promise

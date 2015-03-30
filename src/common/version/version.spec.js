@@ -1,7 +1,7 @@
 
 describe( 'versionService', function() {
   var AppCtrl, $location, $scope, $httpBackend, versionService, versionRequestHandler;
-  var current;
+  var current, broadcast;
 
   beforeEach( module( 'ngBoilerplate' ) );
 
@@ -21,7 +21,6 @@ describe( 'versionService', function() {
   }));
 
   it( 'should not update when versions are manually equal', inject( function() {
-
     current = true;
     Version.setRunning("1.0.0");
     Version.setCurrent("1.0.0");
@@ -63,6 +62,10 @@ describe( 'versionService', function() {
 
   it( 'should not update when versions from server are equal', inject( function() {
     current = false;
+    broadcast = false;
+    $scope.$on("version:expired", function (event, old_version, new_version) {
+      broadcast = true;
+    });
     Version.setEndpoint("test_versionx.json");
     Version.loadRunning();
     Version.isCurrent().then(function () {
@@ -72,11 +75,17 @@ describe( 'versionService', function() {
     $scope.$apply();
 
     expect( current ).toBeTruthy();
+    expect( broadcast ).toBeFalsy();
+
 
   }));
 
   it( 'should update when versions from server are not equal', inject( function() {
     current = false;
+    broadcast = false;
+    $scope.$on("version:expired", function (event, old_version, new_version) {
+      broadcast = true;
+    });
     Version.setEndpoint("test_versionx.json");
     Version.loadRunning();
     Version.setEndpoint("test_versiony.json");
@@ -84,9 +93,11 @@ describe( 'versionService', function() {
       current = true;
     });
     $httpBackend.flush();
-    $scope.$apply();
 
+
+    $scope.$apply();
     expect( current ).toBeFalsy();
+    expect( broadcast ).toBeTruthy();
 
   }));
 });
