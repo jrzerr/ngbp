@@ -1,18 +1,18 @@
 describe( 'AppCtrl', function() {
   describe( 'versionService', function() {
     var AppCtrl, $location, $scope, $httpBackend, versionService, versionRequestHandler;
-    var done, current;
+    var current;
 
     beforeEach( module( 'ngBoilerplate' ) );
 
     beforeEach( inject( function( $controller, _$location_, $rootScope, versionService, $injector ) {
       $httpBackend = $injector.get('$httpBackend');
       $location = _$location_;
-      versionRequestHandler = $httpBackend.when('GET', 'version.json')
+      $httpBackend.when('GET', 'version.json')
       .respond(200, '{ "version": "1.0.0" }');
-      versionRequestHandler = $httpBackend.when('GET', 'test_versionx.json')
+      $httpBackend.when('GET', 'test_versionx.json')
       .respond(200, '{ "version": "1.0.1" }');
-      versionRequestHandler = $httpBackend.when('GET', 'test_versiony.json')
+      $httpBackend.when('GET', 'test_versiony.json')
       .respond(200, '{ "version": "1.0.2" }');
 
       $scope = $rootScope.$new();
@@ -22,64 +22,43 @@ describe( 'AppCtrl', function() {
 
     it( 'should not update when versions are manually equal', inject( function() {
 
-      runs(function () {
-        done = false;
+      current = true;
+      Version.setRunning("1.0.0");
+      Version.setCurrent("1.0.0");
+      expect( Version.getRunning() ).toBe( Version.getCurrent() );
+      Version.isCurrent()
+      .then(function () {
         current = true;
-        Version.setRunning("1.0.0");
-        Version.setCurrent("1.0.0");
-        expect( Version.getRunning() ).toBe( Version.getCurrent() );
-        Version.isCurrent()
-        .then(function () {
-          done = true;
-          current = true;
-        }, function () {
-          done = true;
-          current = false;
-        });
-        $scope.$apply();
+      }, function () {
+        current = false;
       });
-
-      waitsFor(function () {
-        return done;
-      });
-
-      runs(function () {
-        expect(current).toBeTruthy();
-      });
-
       $httpBackend.flush();
+      $scope.$apply();
+
+      expect(current).toBeTruthy();
+
 
 
     }));
 
     it( 'should update when versions are manually not equal', inject( function() {
 
-      runs(function () {
-        done = false;
+      done = false;
+      current = true;
+      Version.setRunning("1.0.0");
+      Version.setCurrent("1.0.1");
+      expect( Version.getRunning() ).not.toBe( Version.getCurrent() );
+      Version.isCurrent()
+      .then(function () {
         current = true;
-        Version.setRunning("1.0.0");
-        Version.setCurrent("1.0.1");
-        expect( Version.getRunning() ).not.toBe( Version.getCurrent() );
-        Version.isCurrent()
-        .then(function () {
-          done = true;
-          current = true;
-        }, function () {
-          done = true;
-          current = false;
-        });
-        $scope.$apply();
+      }, function () {
+        current = false;
       });
-
-      waitsFor(function () {
-        return done;
-      });
-
-      runs(function () {
-        expect(current).toBeFalsy();
-      });
-
       $httpBackend.flush();
+      $scope.$apply();
+
+      expect(current).toBeFalsy();
+
 
 
     }));
@@ -88,11 +67,12 @@ describe( 'AppCtrl', function() {
       current = false;
       Version.setEndpoint("test_versionx.json");
       Version.loadRunning();
-      Version.isCurrent().then(function (data) {
+      Version.isCurrent().then(function () {
         current = true;
       });
       $httpBackend.flush();
       $scope.$apply();
+
       expect( current ).toBeTruthy();
 
     }));
@@ -102,11 +82,12 @@ describe( 'AppCtrl', function() {
       Version.setEndpoint("test_versionx.json");
       Version.loadRunning();
       Version.setEndpoint("test_versiony.json");
-      Version.isCurrent().then(function (data) {
+      Version.isCurrent().then(function () {
         current = true;
       });
       $httpBackend.flush();
       $scope.$apply();
+
       expect( current ).toBeFalsy();
 
     }));

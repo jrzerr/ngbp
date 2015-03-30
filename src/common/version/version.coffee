@@ -1,31 +1,33 @@
 angular.module('version', [])
 
 .factory 'versionService', ($http, $location, $q, $timeout) ->
-  version = {}
+  Version = {}
   runningVersion = ""
   currentVersion = ""
   runningVersionPromise = {}
   endpoint = 'version.json'
 
-  version.setRunning  = (v) ->
+  Version.setRunning  = (v) ->
     runningVersion = v
 
-  version.getRunning = () ->
+  Version.getRunning = () ->
     return runningVersion
 
-
-  version.setCurrent = (v) ->
+  Version.setCurrent = (v) ->
     currentVersion = v
 
-  version.getCurrent = () ->
+  Version.getCurrent = () ->
     return currentVersion
 
-  version.loadRunning = (lol) ->
-    runningVersionPromise = version.loadCurrent()
+  # load current version from server and assign
+  # the value to runningVersion
+  # this should only be run once
+  Version.loadRunning = () ->
+    runningVersionPromise = Version.loadCurrent()
     .success (data) ->
       runningVersion = data.version
 
-  version.loadCurrent = (lol) ->
+  Version.loadCurrent = () ->
     return $http.get(endpoint, { cache: false })
     .error (data) ->
       # Not sure what is the best way to handle
@@ -33,7 +35,7 @@ angular.module('version', [])
       # a few more attempts
       console.log "Could not fetch version"
 
-  version.isCurrent = () ->
+  Version.isCurrent = () ->
     deferred = $q.defer()
     # For testing purposes.
     # currentVersion is always reset to "" after
@@ -47,7 +49,7 @@ angular.module('version', [])
         deferred.reject("Versions do not match!")
     else
       runningVersionPromise.then (data) ->
-        version.loadCurrent()
+        Version.loadCurrent()
         .then (data) ->
           currentVersion = data.data.version
           if currentVersion is runningVersion
@@ -58,12 +60,12 @@ angular.module('version', [])
     
     return deferred.promise
 
-  version.setEndpoint = (location) ->
+  Version.setEndpoint = (location) ->
     endpoint = location
 
-  version.getEndpoint = () ->
+  Version.getEndpoint = () ->
     return endpoint;
 
           
   
-  return version
+  return Version

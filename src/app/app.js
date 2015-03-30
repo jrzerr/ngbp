@@ -20,15 +20,14 @@ angular.module( 'ngBoilerplate', [
     if ( angular.isDefined( toState.data.pageTitle ) ) {
       $scope.pageTitle = toState.data.pageTitle + ' | ngBoilerplate' ;
     }
-    console.log(versionService.isCurrent()
+    versionService.isCurrent()
       .then(function (data) {
         console.log("success: "+data);
       }, function (data) {
         console.log("failed: "+data);
       }, function (data) {
         console.log("notify: "+data);
-      })
-      );
+      });
   });
 })
 
