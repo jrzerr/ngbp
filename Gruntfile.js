@@ -463,11 +463,6 @@ module.exports = function ( grunt ) {
       }
     },
 
-    test_version: {
-      build: {
-        dir: '<%= build_dir %>'
-      }
-    },
 
     /**
      * This task compiles the karma template so that changes to its file array
@@ -640,7 +635,7 @@ module.exports = function ( grunt ) {
     'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'less:build',
     'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss',
-    'index:build', 'version:build', 'test_version:build','karmaconfig',
+    'index:build', 'version:build','karmaconfig',
     'karma:continuous'
   ]);
 
@@ -709,11 +704,6 @@ module.exports = function ( grunt ) {
         });
       }
     });
-  });
-
-  grunt.registerMultiTask( 'test_version', 'Copy test_version* files', function () {
-    grunt.file.copy('src/test_versionx.json', this.data.dir + '/test_versionx.json');
-    grunt.file.copy('src/test_versiony.json', this.data.dir + '/test_versiony.json');
   });
 
   /**

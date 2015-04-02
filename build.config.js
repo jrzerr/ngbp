@@ -31,11 +31,7 @@ module.exports = {
 
     html: [ 'src/index.html' ],
     less: 'src/less/main.less',
-    version: [ 'src/version.json' ],
-    test_versions: [ 
-      'src/test_versionx ',
-      'src/test_versiony '
-    ]
+    version: [ 'src/version.json' ]
   },
 
   /**
