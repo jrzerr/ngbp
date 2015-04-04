@@ -20,17 +20,14 @@ angular.module( 'ngBoilerplate', [
     if ( angular.isDefined( toState.data.pageTitle ) ) {
       $scope.pageTitle = toState.data.pageTitle + ' | ngBoilerplate' ;
     }
-    console.log(versionService);
-    versionService.isCurrent()
-      .then(function (data) {
-        console.log("success: "+data);
-      }, function (data) {
-        console.log("failed: "+data);
-      }, function (data) {
-        console.log("notify: "+data);
-      });
   });
-})
 
+  $scope.$on('version:expired', function (event, running, current) {
+    console.log("Versions do not match!");
+    console.log("Running: "+running);
+    console.log("Current: "+current);
+  });
+
+  })
 ;
 

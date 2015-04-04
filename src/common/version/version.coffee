@@ -71,3 +71,19 @@ angular.module('version', [])
           
   
   return Version
+
+.service 'ServerDataModel', () ->
+  this.version =
+    version: '1.0.0'
+    test_version: [
+      {'version': '1.0.0'}
+        {'version': '1.0.1'}
+    ]
+
+  this.getVersion = () ->
+    return [200, this.version['version'], {}]
+
+  this.getTestVersion = (index) ->
+    return [200, this.version['test_version'][index], {}]
+
+  return

@@ -5,17 +5,27 @@ describe( 'versionService', function() {
 
   beforeEach( module( 'ngBoilerplate' ) );
 
-  beforeEach( inject( function( $controller, _$location_, $rootScope, versionService, $injector ) {
+  beforeEach( inject( function( $controller, _$location_, $rootScope, $injector, versionService, ServerDataModel) {
     $httpBackend = $injector.get('$httpBackend');
     $location = _$location_;
-    $httpBackend.when('GET', 'version.json')
-    .respond(200, '{ "version": "1.0.0" }');
-    $httpBackend.when('GET', 'test_versionx.json')
-    .respond(200, '{ "version": "1.0.1" }');
-    $httpBackend.when('GET', 'test_versiony.json')
-    .respond(200, '{ "version": "1.0.2" }');
+    $httpBackend.whenGET('version.json')
+    .respond(function (method, url, data) {
+      return ServerDataModel.getVersion();
+    });
+    $httpBackend.whenGET('test_versionx.json')
+    .respond(function (method, url, data) {
+      return ServerDataModel.getTestVersion(0);
+    });
+    $httpBackend.whenGET('test_versiony.json')
+    .respond(function (method, url, data) {
+      return ServerDataModel.getTestVersion(1);
+    });
 
     $scope = $rootScope.$new();
+    broadcast = false;
+    $scope.$on("version:expired", function (event, old_version, new_version) {
+      broadcast = true;
+    });
     Version = versionService;
     AppCtrl = $controller( 'AppCtrl', { $location: $location, $scope: $scope, versionService: versionService });
   }));
@@ -33,7 +43,8 @@ describe( 'versionService', function() {
     });
     $scope.$apply();
 
-    expect(current).toBeTruthy();
+    expect( broadcast ).toBeFalsy();
+    expect( current ).toBeTruthy();
 
 
 
@@ -54,7 +65,8 @@ describe( 'versionService', function() {
     });
     $scope.$apply();
 
-    expect(current).toBeFalsy();
+    expect( broadcast ).toBeTruthy();
+    expect( current ).toBeFalsy();
 
 
 
@@ -62,10 +74,6 @@ describe( 'versionService', function() {
 
   it( 'should not update when versions from server are equal', inject( function() {
     current = false;
-    broadcast = false;
-    $scope.$on("version:expired", function (event, old_version, new_version) {
-      broadcast = true;
-    });
     Version.setEndpoint("test_versionx.json");
     Version.loadRunning();
     Version.isCurrent().then(function () {
@@ -82,10 +90,6 @@ describe( 'versionService', function() {
 
   it( 'should update when versions from server are not equal', inject( function() {
     current = false;
-    broadcast = false;
-    $scope.$on("version:expired", function (event, old_version, new_version) {
-      broadcast = true;
-    });
     Version.setEndpoint("test_versionx.json");
     Version.loadRunning();
     Version.setEndpoint("test_versiony.json");
