@@ -22,12 +22,6 @@ angular.module( 'ngBoilerplate', [
     }
   });
 
-  $scope.$on('version:expired', function (event, running, current) {
-    console.log("Versions do not match!");
-    console.log("Running: "+running);
-    console.log("Current: "+current);
-  });
-
   })
 ;
 
