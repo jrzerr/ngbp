@@ -452,6 +452,19 @@ module.exports = function ( grunt ) {
     },
 
     /**
+     * the 'version' task compiles the version.json file as a Grunt template.
+    */
+    version: {
+      build: {
+        dir: '<%= build_dir %>'
+      },
+      compile: {
+        dir: '<%= compile_dir %>'
+      }
+    },
+
+
+    /**
      * This task compiles the karma template so that changes to its file array
      * don't have to be managed manually.
      */
@@ -542,6 +555,14 @@ module.exports = function ( grunt ) {
       },
 
       /**
+       * When version.json changes, we need to compile it.
+       */
+      version: {
+        files: [ '<%= app_files.version %>' ],
+        tasks: [ 'version:build' ]
+      },
+
+      /**
        * When our templates change, we only rewrite the template cache.
        */
       tpls: {
@@ -614,7 +635,7 @@ module.exports = function ( grunt ) {
     'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'less:build',
     'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss',
-    'index:build', 'karmaconfig',
+    'index:build', 'version:build','karmaconfig',
     'karma:continuous'
   ]);
 
@@ -623,7 +644,8 @@ module.exports = function ( grunt ) {
    * minifying your code.
    */
   grunt.registerTask( 'compile', [
-    'less:compile', 'concat:build_css', 'copy:compile_assets', 'ngmin', 'concat:compile_js', 'uglify', 'index:compile'
+    'less:compile', 'concat:build_css', 'copy:compile_assets', 'ngmin', 'concat:compile_js', 'uglify', 'index:compile',
+    'version:compile'
   ]);
 
   /**
@@ -665,6 +687,18 @@ module.exports = function ( grunt ) {
           data: {
             scripts: jsFiles,
             styles: cssFiles,
+            version: grunt.config( 'pkg.version' )
+          }
+        });
+      }
+    });
+  });
+
+  grunt.registerMultiTask( 'version', 'Process version.json template', function () {
+    grunt.file.copy('src/version.json', this.data.dir + '/version.json', {
+      process: function ( contents, path ) {
+        return grunt.template.process( contents, {
+          data: {
             version: grunt.config( 'pkg.version' )
           }
         });
